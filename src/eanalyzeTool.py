@@ -1,3 +1,5 @@
+import os
+
 import cv2
 import logging
 from concurrent.futures import ThreadPoolExecutor
@@ -142,7 +144,10 @@ def calculate_expected_values(estimated_movements, selected_frames, selected_fra
 
 
 
-def plot_translation_distance(expected_translation_distance, estimated_movements, selected_frame_indexes):
+
+
+def plot_translation_distance(expected_translation_distance, estimated_movements,
+                              selected_frame_indexes, save_path=None):
     translation_distances = [movement[2] for movement in estimated_movements]  # Extracting translation distances
     frame_numbers = selected_frame_indexes[:-1]  # Last frame doesn't have a corresponding next frame
 
@@ -154,9 +159,17 @@ def plot_translation_distance(expected_translation_distance, estimated_movements
     plt.title('Translation Distance vs Frame Number')
     plt.legend()
     plt.grid(True)
-    plt.show()
 
-def plot_theta(expected_theta, estimated_movements, selected_frame_indexes):
+    # Show or save the plot based on save_path
+    if save_path:
+        plt.savefig(os.path.join(save_path, 'translation_distance_plot.png'))
+        plt.close()  # Close the plot after saving
+    else:
+        plt.show()
+
+
+def plot_theta(expected_theta, estimated_movements,
+               selected_frame_indexes, save_path=None):
     thetas = [movement[3] for movement in estimated_movements]  # Extracting thetas
     frame_numbers = selected_frame_indexes[:-1]  # Last frame doesn't have a corresponding next frame
 
@@ -168,7 +181,13 @@ def plot_theta(expected_theta, estimated_movements, selected_frame_indexes):
     plt.title('Theta vs Frame Number')
     plt.legend()
     plt.grid(True)
-    plt.show()
+
+    # Show or save the plot based on save_path
+    if save_path:
+        plt.savefig(os.path.join(save_path, 'theta_plot.png'))
+        plt.close()  # Close the plot after saving
+    else:
+        plt.show()
 
 # Example usage:
 # Assuming you have a list of frames named 'frames'

@@ -1,10 +1,10 @@
 import logging
 import os
-
+import re
 import cv2
 import numpy as np
 from LogMannager import create_new_folder
-from eanalyzeTool import plot_translation_distance, calculate_expected_values
+from eanalyzeTool import plot_translation_distance, calculate_expected_values, plot_theta
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
 
@@ -196,6 +196,37 @@ def get_git_commit_info():
         return None, None
 
 
+
+
+
+def parse_log_file(log_file_path):
+    with open(log_file_path, 'r') as file:
+        log_content = file.read()
+
+    # Extract relevant information using regular expressions
+    skip_match = re.search(r'SKIP: (\d+)', log_content)
+    threshold_match = re.search(r'THRESHOLD: (\d+)', log_content)
+    branch_match = re.search(r'Branch: (\w+)', log_content)
+    estimator_match = re.findall(r'movement estimator: \[(.*?)\]', log_content, re.DOTALL)
+
+    if skip_match and threshold_match and branch_match:
+        skip = int(skip_match.group(1))
+        threshold = int(threshold_match.group(1))
+        branch = branch_match.group(1)
+        # Parse the estimator list if it exists
+        if estimator_match:
+            estimator_data = estimator_match[0]
+            # Split the string by parentheses and extract numeric values
+            estimator = [(int(data.split(',')[0]), int(data.split(',')[1]), float(data.split(',')[2]), float(data.split(',')[3])) for data in re.findall(r'\((.*?)\)', estimator_data)]
+        else:
+            estimator = None
+
+        return skip, threshold, branch, estimator
+    else:
+        return None, None, None, None
+
+
+
 if __name__ == "__main__":
     # Configure logging to write to different files for INFO and ERROR
     #Configure logging
@@ -252,7 +283,25 @@ if __name__ == "__main__":
     logging.info(f"Total frames extracted: {len(all_frames)}")
 
     # Estimate camera movement between frames
-    estimator = movement_estimator(all_frames)
+    # estimator = movement_estimator(all_frames)
+
+    # Load the previous log file
+    previous_log_file_path = '/Users/noyagendelman/Desktop/choosingFrames/v1p/chosen_frames_60chosen_frames.log'  # Change this to the path of your previous log file
+    previous_skip, previous_threshold, previous_branch, previous_estimator = parse_log_file(previous_log_file_path)
+
+    # Current configuration
+    current_skip = 20
+    current_threshold = 10
+    current_branch = 'master'  # Get the current branch using your existing function
+
+    if previous_skip == current_skip and previous_threshold == current_threshold and previous_branch == current_branch:
+        # Use the previous estimator
+        estimator = previous_estimator
+        print("Using previous estimator from the log file.")
+    else:
+        # Proceed with regular execution
+        estimator = movement_estimator(all_frames)
+
     logging.info(f"Total pairs of frames processed: {len(estimator)}")
     logging.info(f"movement estimator: {estimator}")
 
@@ -265,14 +314,19 @@ if __name__ == "__main__":
     selected_frames = get_selected_frames(selected_frames_indexes, all_frames)
 
     # Save selected frames as images
-    save_frames_as_photos(selected_frames, new_path)
+    # save_frames_as_photos(selected_frames, new_path)
     expected_translation_distance,expected_theta = calculate_expected_values(estimator,
                                                                              selected_frames,selected_frames_indexes)
 
-    logging.info(f"expected_translation_distance: {expected_translation_distance}")
-    expected_theta(f"expected_theta: {expected_theta}")
+    logging.info(f"expected translation distance: {expected_translation_distance}")
+    logging.info(f"expected theta: {expected_theta}")
+    # Plot translation distance
+    plot_translation_distance(expected_translation_distance, estimator[:len(selected_frames_indexes) - 1],
+                              selected_frames_indexes, new_path)
 
-
+    # Plot theta
+    plot_theta(expected_theta, estimator[:len(selected_frames_indexes) - 1], selected_frames_indexes,
+               new_path)
 
     # logging.info(f"estimate_camera_movement {estimate_camera_movement_con}")
     # video_path = "/Users/noyagendelman/Desktop/choosingFrames/v1.mp4"
