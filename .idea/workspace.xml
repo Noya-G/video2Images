@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9af42395-d4b4-4afb-b4c1-02b9ea72104d" name="Changes" comment="upload files">
+    <list default="true" id="9af42395-d4b4-4afb-b4c1-02b9ea72104d" name="Changes" comment="expected tool">
+      <change afterPath="$PROJECT_DIR$/src/analysisTools/SIFT.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysisTools/binaryDescriptor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysisTools/detectMotion.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysisTools/gaussiaBlur.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/analysisTools/keypointCented.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/chooseFrames.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chooseFrames.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/eanalyzeTool.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/eanalyzeTool.py" afterDir="false" />
@@ -24,12 +29,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Noya-G"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Noya-G&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -49,9 +54,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.SIFT.executor": "Run",
+    "Python.binaryDescriptor.executor": "Run",
     "Python.binaryTree.executor": "Run",
     "Python.chooseFrames.executor": "Run",
+    "Python.detectMotion.executor": "Run",
     "Python.eanalyzeTool.executor": "Run",
+    "Python.gaussiaBlur.executor": "Run",
+    "Python.keypointCented.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "node.js.detected.package.eslint": "true",
@@ -63,7 +73,7 @@
   }
 }]]></component>
   <component name="RunManager" selected="Python.chooseFrames">
-    <configuration name="binaryTree" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="SIFT" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="chooseFrames" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -72,12 +82,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/analysisTools" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/binaryTree.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/analysisTools/SIFT.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -109,7 +119,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="eanalyzeTool" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="detectMotion" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="chooseFrames" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -118,12 +128,58 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/analysisTools" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/eanalyzeTool.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/analysisTools/detectMotion.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="gaussiaBlur" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="chooseFrames" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/analysisTools" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/analysisTools/gaussiaBlur.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="keypointCented" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="chooseFrames" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/analysisTools" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/analysisTools/keypointCented.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -135,8 +191,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.chooseFrames" />
-        <item itemvalue="Python.eanalyzeTool" />
-        <item itemvalue="Python.binaryTree" />
+        <item itemvalue="Python.keypointCented" />
+        <item itemvalue="Python.SIFT" />
+        <item itemvalue="Python.detectMotion" />
+        <item itemvalue="Python.gaussiaBlur" />
       </list>
     </recent_temporary>
   </component>
@@ -160,7 +218,8 @@
       <workItem from="1709807993766" duration="216000" />
       <workItem from="1709816867420" duration="5286000" />
       <workItem from="1709839819711" duration="17786000" />
-      <workItem from="1709986286716" duration="5085000" />
+      <workItem from="1709986286716" duration="15316000" />
+      <workItem from="1710010878914" duration="15314000" />
     </task>
     <task id="LOCAL-00001" summary="upload files">
       <option name="closed" value="true" />
@@ -186,7 +245,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709987032771</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="expected tool">
+      <option name="closed" value="true" />
+      <created>1709992165972</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1709992165972</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,40 +278,31 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="upload files" />
-    <option name="LAST_COMMIT_MESSAGE" value="upload files" />
+    <MESSAGE value="expected tool" />
+    <option name="LAST_COMMIT_MESSAGE" value="expected tool" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/chooseFrames.py</url>
-          <line>357</line>
-          <option name="timeStamp" value="41" />
+          <line>464</line>
+          <option name="timeStamp" value="126" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/chooseFrames.py</url>
-          <line>356</line>
-          <option name="timeStamp" value="53" />
+          <line>466</line>
+          <option name="timeStamp" value="128" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/chooseFrames.py</url>
-          <line>313</line>
-          <option name="timeStamp" value="85" />
+          <line>467</line>
+          <option name="timeStamp" value="129" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/chooseFrames.py</url>
-          <line>316</line>
-          <option name="timeStamp" value="86" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/chooseFrames.py</url>
-          <line>317</line>
-          <option name="timeStamp" value="87" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/chooseFrames.py</url>
-          <line>320</line>
-          <option name="timeStamp" value="88" />
+          <line>468</line>
+          <option name="timeStamp" value="130" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -258,7 +316,12 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/chooseFrames$binaryTree.coverage" NAME="binaryTree Coverage Results" MODIFIED="1709821660025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/chooseFrames$chooseFrames.coverage" NAME="chooseFrames Coverage Results" MODIFIED="1709992084527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/chooseFrames$binaryDescriptor.coverage" NAME="binaryDescriptor Coverage Results" MODIFIED="1709998153547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/analysisTools" />
+    <SUITE FILE_PATH="coverage/chooseFrames$gaussiaBlur.coverage" NAME="gaussiaBlur Coverage Results" MODIFIED="1709999263993" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/analysisTools" />
+    <SUITE FILE_PATH="coverage/chooseFrames$detectMotion.coverage" NAME="detectMotion Coverage Results" MODIFIED="1710002467076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/analysisTools" />
+    <SUITE FILE_PATH="coverage/chooseFrames$chooseFrames.coverage" NAME="chooseFrames Coverage Results" MODIFIED="1710028569724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/chooseFrames$eanalyzeTool.coverage" NAME="eanalyzeTool Coverage Results" MODIFIED="1709978194278" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/chooseFrames$SIFT.coverage" NAME="SIFT Coverage Results" MODIFIED="1710004923270" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/analysisTools" />
+    <SUITE FILE_PATH="coverage/chooseFrames$keypointCented.coverage" NAME="keypointCented Coverage Results" MODIFIED="1710005705245" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/analysisTools" />
   </component>
 </project>

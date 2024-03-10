@@ -143,17 +143,28 @@ def calculate_expected_values(estimated_movements, selected_frames, selected_fra
     return expected_translation_distance, expected_theta
 
 
-
-
-
 def plot_translation_distance(expected_translation_distance, estimated_movements,
                               selected_frame_indexes, save_path=None):
     translation_distances = [movement[2] for movement in estimated_movements]  # Extracting translation distances
     frame_numbers = selected_frame_indexes[:-1]  # Last frame doesn't have a corresponding next frame
 
+    max_idx = np.argmax(translation_distances)
+    min_idx = np.argmin(translation_distances)
+
     plt.figure(figsize=(10, 5))
     plt.plot(frame_numbers, translation_distances, label='Translation Distance', marker='o', linestyle='-')
     plt.axhline(y=expected_translation_distance, color='r', linestyle='--', label='Expected Translation Distance')
+
+    # Annotate maximum and minimum points
+    plt.annotate(f'Max ({frame_numbers[max_idx]}, {translation_distances[max_idx]})',
+                 xy=(frame_numbers[max_idx], translation_distances[max_idx]),
+                 xytext=(frame_numbers[max_idx] - 20, translation_distances[max_idx] + 0.5),
+                 arrowprops=dict(facecolor='black', arrowstyle='->'))
+    plt.annotate(f'Min ({frame_numbers[min_idx]}, {translation_distances[min_idx]})',
+                 xy=(frame_numbers[min_idx], translation_distances[min_idx]),
+                 xytext=(frame_numbers[min_idx] + 10, translation_distances[min_idx] - 0.5),
+                 arrowprops=dict(facecolor='black', arrowstyle='->'))
+
     plt.xlabel('Frame Number')
     plt.ylabel('Translation Distance')
     plt.title('Translation Distance vs Frame Number')
@@ -173,9 +184,23 @@ def plot_theta(expected_theta, estimated_movements,
     thetas = [movement[3] for movement in estimated_movements]  # Extracting thetas
     frame_numbers = selected_frame_indexes[:-1]  # Last frame doesn't have a corresponding next frame
 
+    max_idx = np.argmax(thetas)
+    min_idx = np.argmin(thetas)
+
     plt.figure(figsize=(10, 5))
     plt.plot(frame_numbers, thetas, label='Theta', marker='o', linestyle='-')
     plt.axhline(y=expected_theta, color='r', linestyle='--', label='Expected Theta')
+
+    # Annotate maximum and minimum points
+    plt.annotate(f'Max ({frame_numbers[max_idx]}, {thetas[max_idx]})',
+                 xy=(frame_numbers[max_idx], thetas[max_idx]),
+                 xytext=(frame_numbers[max_idx] - 20, thetas[max_idx] + 0.5),
+                 arrowprops=dict(facecolor='black', arrowstyle='->'))
+    plt.annotate(f'Min ({frame_numbers[min_idx]}, {thetas[min_idx]})',
+                 xy=(frame_numbers[min_idx], thetas[min_idx]),
+                 xytext=(frame_numbers[min_idx] + 10, thetas[min_idx] - 0.5),
+                 arrowprops=dict(facecolor='black', arrowstyle='->'))
+
     plt.xlabel('Frame Number')
     plt.ylabel('Theta')
     plt.title('Theta vs Frame Number')
@@ -188,6 +213,93 @@ def plot_theta(expected_theta, estimated_movements,
         plt.close()  # Close the plot after saving
     else:
         plt.show()
+
+def plot_translation_distance_zoom_out(expected_translation_distance, estimated_movements,
+                              selected_frame_indexes, save_path=None):
+    translation_distances = [movement[2] for movement in estimated_movements]  # Extracting translation distances
+    frame_numbers = selected_frame_indexes[:-1]  # Last frame doesn't have a corresponding next frame
+
+    max_idx = np.argmax(translation_distances)
+    min_idx = np.argmin(translation_distances)
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(frame_numbers, translation_distances, label='Translation Distance', marker='o', linestyle='-')
+    plt.axhline(y=expected_translation_distance, color='r', linestyle='--', label='Expected Translation Distance')
+
+    plt.xlabel('Frame Number')
+    plt.ylabel('Translation Distance')
+    plt.title('Translation Distance vs Frame Number')
+    plt.legend()
+    plt.grid(True)
+
+    # Get initial axis limits
+    init_xlim = plt.gca().get_xlim()
+    init_ylim = plt.gca().get_ylim()
+
+    # Show or save the plot based on save_path
+    if save_path:
+        plt.savefig(os.path.join(save_path, 'translation_distance_plot.png'))
+        plt.close()  # Close the plot after saving
+    else:
+        plt.show()
+
+    # Check for zoom out after the plot is displayed
+    final_xlim = plt.gca().get_xlim()
+    final_ylim = plt.gca().get_ylim()
+
+    zoom_out_x = final_xlim[1] < init_xlim[1] and final_xlim[0] > init_xlim[0]
+    zoom_out_y = final_ylim[1] < init_ylim[1] and final_ylim[0] > init_ylim[0]
+
+    if zoom_out_x or zoom_out_y:
+        print("Zoom out detected!")
+
+def plot_theta_zoom_out(expected_theta, estimated_movements, selected_frame_indexes, save_path=None):
+    thetas = [movement[3] for movement in estimated_movements]  # Extracting thetas
+    frame_numbers = selected_frame_indexes[:-1]  # Last frame doesn't have a corresponding next frame
+
+    max_idx = np.argmax(thetas)
+    min_idx = np.argmin(thetas)
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(frame_numbers, thetas, label='Theta', marker='o', linestyle='-')
+    plt.axhline(y=expected_theta, color='r', linestyle='--', label='Expected Theta')
+
+    # Annotate max and min points with indexes
+    plt.annotate(f'Max ({frame_numbers[max_idx]}, {thetas[max_idx]})',
+                 xy=(frame_numbers[max_idx], thetas[max_idx]),
+                 xytext=(frame_numbers[max_idx] + 10, thetas[max_idx] - 0.1),
+                 arrowprops=dict(facecolor='black', shrink=0.05))
+    plt.annotate(f'Min ({frame_numbers[min_idx]}, {thetas[min_idx]})',
+                 xy=(frame_numbers[min_idx], thetas[min_idx]),
+                 xytext=(frame_numbers[min_idx] + 10, thetas[min_idx] + 0.1),
+                 arrowprops=dict(facecolor='black', shrink=0.05))
+
+    plt.xlabel('Frame Number')
+    plt.ylabel('Theta')
+    plt.title('Tplot_theta_zoom_out')
+    plt.legend()
+    plt.grid(True)
+
+    # Get initial axis limits
+    init_xlim = plt.gca().get_xlim()
+    init_ylim = plt.gca().get_ylim()
+
+    # Show or save the plot based on save_path
+    if save_path:
+        plt.savefig(os.path.join(save_path, 'plot_theta_zoom_out.png'))
+        plt.close()  # Close the plot after saving
+    else:
+        plt.show()
+
+    # Check for zoom out after the plot is displayed
+    final_xlim = plt.gca().get_xlim()
+    final_ylim = plt.gca().get_ylim()
+
+    zoom_out_x = final_xlim[1] < init_xlim[1] and final_xlim[0] > init_xlim[0]
+    zoom_out_y = final_ylim[1] < init_ylim[1] and final_ylim[0] > init_ylim[0]
+
+    if zoom_out_x or zoom_out_y:
+        print("Zoom out detected!")
 
 # Example usage:
 # Assuming you have a list of frames named 'frames'
