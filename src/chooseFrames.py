@@ -1,3 +1,4 @@
+import logging
 import math
 import os
 import re
@@ -376,69 +377,83 @@ def select_frames_with_most_significant_movements(selected_frames, selected_fram
 
     return selected_frames, selected_indexes
 
-if __name__ == "__main__":
-    video_path = "/Users/noyagendelman/Desktop/choosingFrames/v2.mp4"  # Enter the path to the mp4 file
+def get_log_file(cond,video_path, destPath,preLog=None):
+
+    video_path = video_path
     video_name = last_six_chars = video_path[-6:]
     new_path = create_new_folder("/Users/noyagendelman/Desktop/choosingFrames/v2p", "chosen_frames")
-    log_file_path = os.path.join(new_path, "chosen_frames.log")
-    logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    logERORR_file_path = os.path.join(new_path, 'error.log')
-    logging.basicConfig(filename=logERORR_file_path, level=logging.ERROR)
+    if cond is True:
+        log_file_path = os.path.join(new_path, "chosen_frames.log")
+        logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        logERORR_file_path = os.path.join(new_path, 'error.log')
+        logging.basicConfig(filename=logERORR_file_path, level=logging.ERROR)
 
-    # Get current branch
-    current_branch = get_git_branch()
+        # Get current branch
+        current_branch = get_git_branch()
 
-    # Get commit information
-    commit_time, commit_message = get_git_commit_info()
+        # Get commit information
+        commit_time, commit_message = get_git_commit_info()
 
-    if commit_time and commit_message:
-        logging.info(f"Commit Time: {commit_time}")
-        logging.info(f"Commit: {commit_message}")
-    else:
-        logging.info("Commit information not available")
+        if commit_time and commit_message:
+            logging.info(f"Commit Time: {commit_time}")
+            logging.info(f"Commit: {commit_message}")
+        else:
+            logging.info("Commit information not available")
 
-    if current_branch:
-        logging.info(f"Branch: {current_branch}")
-    else:
-        logging.info("Branch information not available")
-    logging.info(f"SKIP: {SKIP}")
-    logging.info(f"THRESHOLD: {THRESHOLD}")
-    logging.info(f"Video name: {video_name}")
+        if current_branch:
+            logging.info(f"Branch: {current_branch}")
+        else:
+            logging.info("Branch information not available")
+        logging.info(f"SKIP: {SKIP}")
+        logging.info(f"THRESHOLD: {THRESHOLD}")
+        logging.info(f"Video name: {video_name}")
 
     # Extract frames from the video
     all_frames = extract_frames(video_path)
-    logging.info(f"Total frames extracted: {len(all_frames)}")
+    if cond is True:
+        logging.info(f"Total frames extracted: {len(all_frames)}")
 
-    # Load the previous log file
-    previous_log_file_path = '/Users/noyagendelman/Desktop/choosingFrames/v2p/chosen_frames_22/chosen_frames.log'  # Change this to the path of your previous log file
-    previous_skip, previous_threshold, previous_branch, previous_estimator, previous_frames_direction = parse_log_file(
-        previous_log_file_path)
+        # Load the previous log file
+        if preLog is not None:
+            previous_log_file_path = '/Users/noyagendelman/Desktop/choosingFrames/v2p/chosen_frames_22/chosen_frames.log'  # Change this to the path of your previous log file
+            previous_skip, previous_threshold, previous_branch, previous_estimator, previous_frames_direction = parse_log_file(
+                previous_log_file_path)
 
-    # Check if any previous parameter is None
-    if any(param is None for param in
-           [previous_skip, previous_threshold, previous_branch, previous_estimator, previous_frames_direction]):
-        # Execute the method to proceed with regular execution
+            # Check if any previous parameter is None
+            if any(param is None for param in
+                   [previous_skip, previous_threshold, previous_branch, previous_estimator, previous_frames_direction]):
+                # Execute the method to proceed with regular execution
+                estimator = movement_estimator(all_frames)
+                frames_indexes = select_frames(estimator)
+
+                frames_direction = movement_direction(all_frames, frames_indexes)
+            else:
+                # Proceed with regular execution
+                estimator = previous_estimator
+                frames_direction = previous_frames_direction
+
+        else:
+            estimator = movement_estimator(all_frames)
+            frames_indexes = select_frames(estimator)
+            frames_direction = movement_direction(all_frames, frames_indexes)
+
+        logging.info("Using previous estimator and frames_direction from the log file.")
+        # Select frames with significant camera movement
+        logging.info(f"Total pairs of frames processed: {len(estimator)}")
+        logging.info(f"movement estimator: {estimator}")
+        logging.info(f"frames direction detected: {frames_direction}")
+
+
+    if cond is False:
         estimator = movement_estimator(all_frames)
+        # Select frames with significant camera movement
+        selected_frames_indexes = select_frames(estimator)
         frames_indexes = select_frames(estimator)
+        frames_direction = movement_direction(all_frames, frames_indexes)
 
-        frames_direction = movement_direction(all_frames,frames_indexes)
-
-
-    else:
-        # Proceed with regular execution
-        estimator = previous_estimator
-        frames_direction = previous_frames_direction
-        print("Using previous estimator and frames_direction from the log file.")
-
-    # Select frames with significant camera movement
-    logging.info(f"Total pairs of frames processed: {len(estimator)}")
-    logging.info(f"movement estimator: {estimator}")
-    logging.info(f"frames direction detected: {frames_direction}")
-
-    # Select frames with significant camera movement
-    selected_frames_indexes = select_frames(estimator)
-    logging.info(f"Total selected frames: {len(selected_frames_indexes)}")
-    logging.info(f"selected frames: {selected_frames_indexes}")
+    if cond is True:
+        logging.info(f"Total selected frames: {len(selected_frames_indexes)}")
+        logging.info(f"selected frames: {selected_frames_indexes}")
 
     # Get selected frames
     selected_frames = get_selected_frames(selected_frames_indexes, all_frames)
@@ -446,46 +461,50 @@ if __name__ == "__main__":
     # Save selected frames as images
     # save_frames_as_photos(selected_frames, new_path)
     expected_translation_distance, expected_theta = calculate_expected_values(estimator,
-                                                                             selected_frames,
-                                                                             selected_frames_indexes)
+                                                                              selected_frames,
+                                                                              selected_frames_indexes)
+    if cond is True:
+        logging.info(f"expected translation distance: {expected_translation_distance}")
+        logging.info(f"expected theta: {expected_theta}")
+        # Plot translation distance
+        plot_translation_distance(expected_translation_distance, estimator[:len(selected_frames_indexes) - 1],
+                                  selected_frames_indexes, new_path)
 
-    logging.info(f"expected translation distance: {expected_translation_distance}")
-    logging.info(f"expected theta: {expected_theta}")
-    # Plot translation distance
-    plot_translation_distance(expected_translation_distance, estimator[:len(selected_frames_indexes) - 1],
-                              selected_frames_indexes, new_path)
-
-    # Plot theta
-    plot_theta(expected_theta, estimator[:len(selected_frames_indexes) - 1], selected_frames_indexes,
-               new_path)
-    plot_theta_zoom_out(expected_theta, estimator[:len(selected_frames_indexes) - 1], selected_frames_indexes,
-                        new_path)
-
+        # Plot theta
+        plot_theta(expected_theta, estimator[:len(selected_frames_indexes) - 1], selected_frames_indexes,
+                   new_path)
+        plot_theta_zoom_out(expected_theta, estimator[:len(selected_frames_indexes) - 1], selected_frames_indexes,
+                            new_path)
 
     longestSubarray = longest_subarray_with_value(frames_direction)
 
     firstGoodFrame = longestSubarray[-1][1]
-    if (firstGoodFrame < selected_frames_indexes[math.floor(len(selected_frames_indexes)/2)]):
+    if (firstGoodFrame < selected_frames_indexes[math.floor(len(selected_frames_indexes) / 2)]):
         selected_frames_indexes = selected_frames_indexes[selected_frames_indexes.index(firstGoodFrame):]
-        logging.info(f"selected frames after cutting: {selected_frames_indexes}")
-        logging.info(f"total selected frames after cutting: {len(selected_frames_indexes)}")
+        if cond is True:
+            logging.info(f"selected frames after cutting: {selected_frames_indexes}")
+            logging.info(f"total selected frames after cutting: {len(selected_frames_indexes)}")
         selected_frames = get_selected_frames(selected_frames_indexes, all_frames)
 
     if (firstGoodFrame > selected_frames_indexes[math.floor(len(selected_frames_indexes) / 2)]):
         selected_frames_indexes = selected_frames_indexes[:selected_frames_indexes.index(firstGoodFrame)]
-        logging.info(f"selected frames after cutting: {selected_frames_indexes}")
-        logging.info(f"total selected frames after cutting: {len(selected_frames_indexes)}")
+        if cond is True:
+            logging.info(f"selected frames after cutting: {selected_frames_indexes}")
+            logging.info(f"total selected frames after cutting: {len(selected_frames_indexes)}")
         selected_frames = get_selected_frames(selected_frames_indexes, all_frames)
 
     # estimator2 = movement_estimator(selected_frames)
     selected_indexes = largest_interval_subset(selected_frames_indexes)
-    logging.info(f"final selected frames indexes: {selected_frames_indexes}")
+    if cond is True:
+        logging.info(f"final selected frames indexes: {selected_frames_indexes}")
     selected_frames = get_selected_frames(selected_indexes, all_frames)
-    save_frames_as_photos(selected_frames,new_path)
 
+    save_frames_as_photos(selected_frames, new_path)
 
-
-
+if __name__ == "__main__":
+    videoPath = ""
+    destPath = ""
+    get_log_file(False)
 
 
 
