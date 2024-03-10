@@ -1,4 +1,4 @@
-# Video Frame Selection Tool
+#video2Images
 
 This tool allows users to analyze a video file, extract frames, and select specific frames based on camera movement and other criteria.
 
@@ -49,6 +49,10 @@ If you encounter any issues or need assistance, follow these steps:
 - The tool logs various information including the processing steps, git commit details, and frame selection criteria.
 - Refer to the `LogMannager.py` module for logging configuration.
 - Make sure to handle errors appropriately, especially if any dependencies are missing or if the input video file is not found.
+
+##Authors
+- [Noya Gendelman](https://github.com/Noya-G)
+- [Bat-Ya Ashkenazy](https://github.com/batya1999)
 
 ## License
 
