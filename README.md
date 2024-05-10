@@ -1,5 +1,4 @@
-
-![video2images-high-resolution-logo-transparent](https://github.com/Noya-G/video2Images/assets/73538626/ee8297e9-1b3b-424c-a14e-dc3c37a775ab)
+![video2images-high-resolution-logo-black-transparent](https://github.com/Noya-G/video2Images/assets/73538626/24219972-6fd6-4d4c-8907-6ef8ac4b2b8c)
 
 
 This tool allows users to analyze a video file, extract frames, and select specific frames based on camera movement and other criteria.
