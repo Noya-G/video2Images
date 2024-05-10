@@ -1,4 +1,4 @@
-#video2Images
+# video2Images
 
 This tool allows users to analyze a video file, extract frames, and select specific frames based on camera movement and other criteria.
 
@@ -50,7 +50,7 @@ If you encounter any issues or need assistance, follow these steps:
 - Refer to the `LogMannager.py` module for logging configuration.
 - Make sure to handle errors appropriately, especially if any dependencies are missing or if the input video file is not found.
 
-##Authors
+## Authors
 - [Noya Gendelman](https://github.com/Noya-G)
 - [Bat-Ya Ashkenazy](https://github.com/batya1999)
 
@@ -58,6 +58,53 @@ If you encounter any issues or need assistance, follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+
+
+## Description
+Video2ImageCLI is a command-line tool for extracting frames from a video file. It provides various options for customizing the extraction process such as frame rate, output format, and more.
+
+
 ---
 
-This updated README provides clear instructions on how to run the code and offers help in case users encounter any issues.
+## Usage
+
+### Commands
+- **extract**: Extract frames from a video file.
+- **help**: Show help message.
+
+### Options
+- `-v, --video`: Path to the video file (required).
+- `-o, --output`: Output directory for extracted images. Default is 'images' directory.
+- `-f, --format`: Image format (e.g., png, jpg). Default is 'png'.
+- `-r, --rate`: Frame extraction rate (e.g., 1 frame every 5 seconds). Default is 5.
+- `-m, --memory`: Use memory to ensure the same photo is not taken twice. Default is False.
+- `-c, --count`: Extract frames by quantity (will be averaged by length).
+- `-l, --limit`: Limit the number of frames to be extracted.
+- `-p, --percent`: Extract frames by percentage difference (e.g., 10 - above this percentage difference).
+- `-?, --help`: Display help message.
+
+### Examples
+- Extract one frame every 5 seconds from a video and save as PNG:
+  ```
+  extract --video=myvideo.mp4 --output=images --rate=5 --format=png
+  ```
+- Extract 100 frames from video and save them in the 'images' directory as PNG files:
+  ```
+  extract -v=myvideo.mp4 -o=images -c=100 -f=png
+  ```
+- Extract one frame every 1 second from a video, save as PNG, and use memory to avoid duplicates with a 10% change limitation and a total limitation of 50 frames:
+  ```
+  extract -v=video.mp4 -o=images -f=png -r=1 -m=True -p=10 -l=50
+  ```
+
+### Notes
+- Ensure the video file path is correct.
+- Make sure the output directory is writable.
+- The tool requires appropriate permissions to read and write files.
+
+For more information, visit our documentation at [link to documentation].
+
+---
+
+Feel free to adjust command names, options, and examples to align with your CLI tool's capabilities and design.
+```
