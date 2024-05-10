@@ -54,6 +54,7 @@ If you encounter any issues or need assistance, follow these steps:
 ## Authors
 - [Noya Gendelman](https://github.com/Noya-G)
 - [Bat-Ya Ashkenazy](https://github.com/batya1999)
+- [Shlomo Pearl](https://github.com/shlomoPearl)
 
 ## License
 
