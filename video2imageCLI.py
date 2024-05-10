@@ -2,7 +2,7 @@ import signal
 import sys
 import os
 from video2Images import signal_handler
-
+import  frame_maker
 signal.signal(signal.SIGINT, signal_handler.ctrlc_signal_handler)
 # signal.signal(signal.SIGTSTP, signal_handler.ctrlz_signal_handler)
 
@@ -105,7 +105,9 @@ def command_management(command):
     _o = command['-o']
     if not os.path.isdir(_o):
         os.makedirs(_o)
-    pass
+    _f = command['-f']
+    if command.get('-c') is not None:
+        frame_maker.extract_frames(_f, _v, _o, _c)
 
 
 def cli_engine():
