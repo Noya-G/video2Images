@@ -57,6 +57,7 @@ bool_val = ['-m']
 
 def parse_flag(flag_lst):
     if flag_lst[0] not in extract_flags:
+        print(error_message)
         return 0, None
     reduce_flag = flag_lst[0].replace('-', '', 1) if len(flag_lst[0]) > 2 else flag_lst[0]
     key = reduce_flag[:2]
@@ -88,8 +89,12 @@ def parse_command(command_p):
         else:
             print(f"{error_message}. Check - {option}")
             return
+    if extract_option.get('-v') is None:
+        print("Need to insert path to input file, try again.")
+        return
     if len(extract_option) > 0:
         return extract_option
+    return
 
 
 def command_management(command):
@@ -119,8 +124,6 @@ def cli_engine():
                 command_dict = parse_command(command_lst[1:])
                 if command_dict is not None:
                     command_management(command_dict)
-                else:
-                    print(error_message)
             else:
                 print(error_message)
     except EOFError as e:
