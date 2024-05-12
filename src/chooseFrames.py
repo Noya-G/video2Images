@@ -377,11 +377,13 @@ def select_frames_with_most_significant_movements(selected_frames, selected_fram
 
     return selected_frames, selected_indexes
 
-def get_log_file(cond,video_path, destPath,preLog=None):
-
+def get_log_file(cond,video_path, destPath,format_type = "png" ,
+                 rate=SKIP,count=100,Limit=100,precent =100, preLog=None):
+    SKIP = rate
     video_path = video_path
     video_name = last_six_chars = video_path[-6:]
-    new_path = create_new_folder("/Users/noyagendelman/Desktop/choosingFrames/v2p", "chosen_frames")
+    directory = os.path.dirname(video_path)
+    new_path = create_new_folder(directory, "chosen_frames")
     if cond is True:
         log_file_path = os.path.join(new_path, "chosen_frames.log")
         logging.basicConfig(filename=log_file_path, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -476,7 +478,7 @@ def get_log_file(cond,video_path, destPath,preLog=None):
         plot_theta_zoom_out(expected_theta, estimator[:len(selected_frames_indexes) - 1], selected_frames_indexes,
                             new_path)
 
-    longestSubarray = longest_subarray_with_value(frames_direction)
+    longestSubarray = longest_subarray_with_value(frames_direction,count)
 
     firstGoodFrame = longestSubarray[-1][1]
     if (firstGoodFrame < selected_frames_indexes[math.floor(len(selected_frames_indexes) / 2)]):
@@ -500,13 +502,3 @@ def get_log_file(cond,video_path, destPath,preLog=None):
     selected_frames = get_selected_frames(selected_indexes, all_frames)
 
     save_frames_as_photos(selected_frames, new_path)
-
-if __name__ == "__main__":
-    videoPath = ""
-    destPath = ""
-    get_log_file(False)
-
-
-
-
-
