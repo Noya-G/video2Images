@@ -2,7 +2,8 @@ import signal
 import sys
 import os
 from video2Images import signal_handler, run_odm
-import  frame_maker
+import frame_operation
+
 signal.signal(signal.SIGINT, signal_handler.ctrlc_signal_handler)
 # signal.signal(signal.SIGTSTP, signal_handler.ctrlz_signal_handler)
 
@@ -78,7 +79,7 @@ def parse_flag(flag_lst):
 
 
 def parse_command(command_p):
-    extract_option = {'-o': 'images', '-f': 'png', '-r': 5, '-m': False}
+    extract_option = {'-o': 'images', '-f': 'png', '-m': False}
     for option in command_p:
         opt_k_v = option.split('=')
         if len(opt_k_v) == 2:
@@ -98,6 +99,10 @@ def parse_command(command_p):
 
 
 def command_management(command):
+    _p = command.get('-p')
+    _l = command.get('-l')
+    _m = command.get('-m')
+
     _v = command['-v']
     if not os.path.isfile(_v):
         print(f"The file not exist. Enter correct path and try again")
@@ -108,11 +113,15 @@ def command_management(command):
     _f = command['-f']
     if command.get('-c') is not None:
         _c = command['-c']
-        frame_maker.extract_frames(_f, _v, _o, _c)
+        frame_operation.extract_frames(_v, _o, _c, _f)
+    elif command.get('-r') is not None:
+        _r = command['-r']
+        frame_operation.extract_frames_by_time(_v, _o, _r, _f, _p, _l, _m)
 
     # after the image extract finished run ODM:
     run_data = f"./run.sh --project-path /datasets {_o}"
     run_odm.run_command(run_data)
+
 
 def cli_engine():
     print(welcome_message)
