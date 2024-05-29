@@ -1,7 +1,6 @@
 import cv2
 import os
-
-import numpy as np
+from video2Images import iou_and_zoom
 
 
 def extract_frames(video_path, output_dir, num_frames, file_type):
@@ -56,13 +55,3 @@ def extract_frames_by_time(video_path, output_dir, frame_rate, file_type, percen
         frame_count += frame_interval
     video_capture.release()
     print(f"Successfully extracted {extracted_frames} frames to '{output_dir}'.")
-
-
-def calculate_difference(frame1, frame2):
-    gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
-    gray2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
-    flow = cv2.calcOpticalFlowFarneback(gray1, gray2, None, 0.5, 3, 15, 3, 5, 1.2, 0)
-    magnitude = np.sqrt(flow[..., 0] ** 2 + flow[..., 1] ** 2)
-    magnitude = cv2.normalize(magnitude, None, 0, 255, cv2.NORM_MINMAX)
-    percentage_difference = np.mean(magnitude) / 255 * 100
-    return percentage_difference
