@@ -1,3 +1,5 @@
+import logging
+
 import cv2
 import os
 from video2Images import iou_and_zoom
@@ -32,26 +34,51 @@ def extract_frames(video_path, output_dir, num_frames, file_type):
 
 
 def extract_frames_by_time(video_path, output_dir, frame_rate, file_type, percent, limit, memory):
+    logging.basicConfig(filename='myapp.log', level=logging.INFO, format="%(levelname)s - %(message)s")
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter("[%(levelname)s] - %(message)s")
+    console_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(console_handler)
+    logger = logging.getLogger()
+    logger.info("$$$$$ START $$$$$")
+
     video_capture = cv2.VideoCapture(video_path)
     if not video_capture.isOpened():
-        print("Error: Could not open the video file.")
+        logger.error("Error: Could not open the video file.")
         return
     fps = video_capture.get(cv2.CAP_PROP_FPS)
     frame_interval = int(fps * frame_rate)
     extracted_frames = 0
     frame_count = 0
 
+    video_capture.set(cv2.CAP_PROP_POS_MSEC, frame_count * 1000 / fps)
+    ret, prev_frame = video_capture.read()
+    if not ret:
+        logger.info("Error occurred!")
+        return
     while video_capture.isOpened():
         if limit is not None and extracted_frames >= limit:
             break
         video_capture.set(cv2.CAP_PROP_POS_MSEC, frame_count * 1000 / fps)
-        ret, frame = video_capture.read()
+        ret, current_frame = video_capture.read()
         if not ret:
             break
         # Save the frame
-        frame_path = os.path.join(output_dir, f"frame_{extracted_frames}.{file_type}")
-        cv2.imwrite(frame_path, frame)
-        extracted_frames += 1
+        if percent is not None:
+            change_diff = iou_and_zoom.calculate_iou(prev_frame, current_frame)
+            logger.info(f"percent of change - {change_diff}")
+            if change_diff > percent:
+                frame_path = os.path.join(output_dir, f"frame_{extracted_frames}.{file_type}")
+                cv2.imwrite(frame_path, current_frame)
+                prev_frame = current_frame.copy()
+                extracted_frames += 1
+                logger.info(f"extracted frame number - {extracted_frames}")
+        else:
+            frame_path = os.path.join(output_dir, f"frame_{extracted_frames}.{file_type}")
+            cv2.imwrite(frame_path, prev_frame)
+            prev_frame = current_frame.copy()
+            extracted_frames += 1
         frame_count += frame_interval
     video_capture.release()
-    print(f"Successfully extracted {extracted_frames} frames to '{output_dir}'.")
+    logger.info(f"Successfully extracted {extracted_frames} frames to '{output_dir}'.")
