@@ -30,10 +30,12 @@ def calculate_iou_and_show_overlap(image1, image2, ratio_threshold=0.75, min_goo
     warped_image2 = cv2.warpPerspective(image2, M, (w, h))
     intersection = cv2.bitwise_and(image1, warped_image2)
     union = cv2.bitwise_or(image1, warped_image2)
-    iou = np.sum(intersection > 0) / np.sum(union > 0)
+    # need it to measure the percentage of difference between 2 images
+    iou = (np.sum(intersection > 0) / np.sum(union > 0)) * 100
+    diff = 100 - iou
     # visualise overlap
-    overlap_image = cv2.addWeighted(image1, 0.5, warped_image2, 0.5, 0)
-    cv2.imshow('Overlap Area', overlap_image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    return iou
+    # overlap_image = cv2.addWeighted(image1, 0.5, warped_image2, 0.5, 0)
+    # cv2.imshow('Overlap Area', overlap_image)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    return diff
