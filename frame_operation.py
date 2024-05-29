@@ -2,7 +2,7 @@ from video2Images.video2imageCLI import logger
 import cv2
 import os
 from video2Images import iou_and_zoom
-
+from tqdm import tqdm
 
 def extract_frames(video_path, output_dir, num_frames, file_type):
     video_capture = cv2.VideoCapture(video_path)
@@ -13,7 +13,7 @@ def extract_frames(video_path, output_dir, num_frames, file_type):
     total_frames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
     logger.info(f"Total frames - {total_frames}")
     if num_frames > total_frames:
-        logger.error("Error: The requested number of frames exceeds the total frames in the video.")
+        logger.info("Error: The requested number of frames exceeds the total frames in the video.")
         return
 
     interval = total_frames // num_frames
