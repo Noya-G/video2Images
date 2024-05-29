@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def calculate_iou_and_show_overlap(image1, image2, ratio_threshold=0.75, min_good_matches=10, min_inliers=10):
+def calculate_iou(image1, image2, ratio_threshold=0.75, min_good_matches=10, min_inliers=10):
     gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
     gray2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
     sift = cv2.SIFT_create()
