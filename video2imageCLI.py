@@ -1,3 +1,4 @@
+import logging
 import signal
 import sys
 import os
@@ -146,4 +147,13 @@ def cli_engine():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='video2image.log', level=logging.INFO, format="%(levelname)s - %(message)s")
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter("[%(levelname)s] - %(message)s")
+    console_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(console_handler)
+    logger = logging.getLogger()
+    logger.propagate = True
+
     cli_engine()

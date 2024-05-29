@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from video2imageCLI import logger
 
 
 def calculate_iou(image1, image2, ratio_threshold=0.75, min_good_matches=10, min_inliers=10):
@@ -14,17 +15,15 @@ def calculate_iou(image1, image2, ratio_threshold=0.75, min_good_matches=10, min
     for m, n in matches:
         if m.distance < ratio_threshold * n.distance:
             good_matches.append(m)
-    print(len(good_matches), min_good_matches)
     if len(good_matches) < min_good_matches:
-        print("Not enough good matches found. Returning IoU of 0.")
+        logger.info("Not enough good matches found. Returning IoU of 0.")
         return 0.0
     src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
     dst_pts = np.float32([kp2[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
     M, mask = cv2.findHomography(dst_pts, src_pts, cv2.RANSAC, 5.0)
     inliers = mask.ravel().sum()
-    print(inliers, min_inliers)
     if inliers < min_inliers:
-        print("Not enough inliers found. Returning IoU of 0.")
+        logger.info("Not enough inliers found. Returning IoU of 0.")
         return 0.0
     h, w, _ = image1.shape
     warped_image2 = cv2.warpPerspective(image2, M, (w, h))
