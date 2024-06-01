@@ -2,6 +2,7 @@ import logging
 import signal
 import sys
 import os
+import subprocess
 from video2Images import signal_handler, run_odm
 import frame_operation
 
@@ -18,21 +19,21 @@ help_message = \
       help              Show this help message.\n\n\
     Options:\n\
       -v, --video       Path to the video file (required).\n\
-      -o, --output      Output directory for extracted images.Default is images dir\n\
+      -o, --output      Output directory for extracted images. Default is images dir\n\
       -f, --format      Image format (e.g., png, jpg). Default is 'png'.\n\
-      -r, --rate        Frame extraction rate (e.g., 1 frame every 5 seconds) Default is 5).\n\
-      -m, --memory      Use memory to make sure the same photo is not taken twice Default is False\n\
-      -c, --count       Extracting frames by quantity (will be averaged by length) \n\
-      -l, --limit       Limiting the number of frames to be extracted \n\
-      -p, --percent     Extracting frames by percentage difference (e.g,10- above this percentage difference)\n\
+      -r, --rate        Frame extraction rate (e.g., 1 frame every 5 seconds). Default is 5.\n\
+      -m, --memory      Use memory to make sure the same photo is not taken twice. Default is False\n\
+      -c, --count       Extracting frames by quantity (will be averaged by length).\n\
+      -l, --limit       Limiting the number of frames to be extracted.\n\
+      -p, --percent     Extracting frames by percentage difference (e.g., 10 - above this percentage difference).\n\
       -?, --help        Display this help message.\n\n\
     Examples:\n\
       # Extract one frame every 5 seconds from a video and save as PNG\n\
       extract --video=myvideo.mp4 --output=images --rate=5 --format=png\n\
       # Extract 100 frames from video and save it in images dir as png file\n\
       extract -v=myvideo.mp4 -o=images -c=100 -f=png\n\
-      # Extract one frame every 1 seconds from a video asn save as png file in images dir.\n\
-        In addition use in memory take frame only if there is a change above 10% with total limitation of 50. \n\
+      # Extract one frame every 1 seconds from a video as save as png file in images dir.\n\
+        In addition use in memory take frame only if there is a change above 10% with total limitation of 50.\n\
       extract -v=video.mp4 -o=images -f=png -r=1 -m=True -p=10 -l=50\n\
     Notes:\n\
       - Ensure the video file path is correct.\n\
@@ -122,6 +123,27 @@ def command_management(command):
     # after the image extract finished run ODM:
     run_data = f"./run.sh --project-path /datasets {_o}"
     run_odm.run_command(run_data)
+
+    # Run CloudCompare command to merge meshes
+    cc_command = [
+        "/Applications/CloudCompare.app/Contents/MacOS/CloudCompare",
+        "-SILENT",
+        "-O", "/Users/noyagendelman/Desktop/untitled folder/compare_1FILES 2/texturedMesh.obj",
+        "-O", "/Users/noyagendelman/Desktop/untitled folder/compare_2FILES 2/texturedMesh.obj",
+        "-MERGE_MESHES",
+        "-SAVE_MESHES", "FILE", "/Users/noyagendelman/Desktop/untitled folder/cloud compare output/merged_model.obj"
+    ]
+
+    try:
+        result = subprocess.run(cc_command, capture_output=True, text=True, check=True)
+        print("STDOUT:")
+        print(result.stdout)
+        print("STDERR:")
+        print(result.stderr)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
+        print(f"STDOUT: {e.stdout}")
+        print(f"STDERR: {e.stderr}")
 
 
 def cli_engine():
