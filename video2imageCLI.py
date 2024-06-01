@@ -19,7 +19,7 @@ help_message = \
       help              Show this help message.\n\n\
     Options:\n\
       -v, --video       Path to the video file (required).\n\
-      -o, --output      Output directory for extracted images. Default is images dir\n\
+      -o, --output      output directory for extracted images. Default is images dir\n\
       -f, --format      Image format (e.g., png, jpg). Default is 'png'.\n\
       -r, --rate        Frame extraction rate (e.g., 1 frame every 5 seconds). Default is 5.\n\
       -m, --memory      Use memory to make sure the same photo is not taken twice. Default is False\n\
@@ -124,15 +124,23 @@ def command_management(command):
     run_data = f"./run.sh --project-path /datasets {_o}"
     run_odm.run_command(run_data)
 
+    
     # Run CloudCompare command to merge meshes
     cc_command = [
-        "/Applications/CloudCompare.app/Contents/MacOS/CloudCompare",
+        "CloudCompare",  # On Windows, CloudCompare should be in PATH
         "-SILENT",
-        "-O", "/Users/noyagendelman/Desktop/untitled folder/compare_1FILES 2/texturedMesh.obj",
-        "-O", "/Users/noyagendelman/Desktop/untitled folder/compare_2FILES 2/texturedMesh.obj",
+        "-SILENT",
+        "-O", "???????????", ###### ADDDD 
+        "-O", "???????????",
         "-MERGE_MESHES",
-        "-SAVE_MESHES", "FILE", "/Users/noyagendelman/Desktop/untitled folder/cloud compare output/merged_model.obj"
+        "-SAVE_MESHES", "FILE", _o
     ]
+
+    # Check the operating system to adjust the command accordingly
+    if os.name == 'posix':  # Linux/macOS
+        cc_command[0] = "/Applications/CloudCompare.app/Contents/MacOS/CloudCompare"  # Path to CloudCompare on macOS
+    elif os.name == 'nt':  # Windows
+        cc_command[0] = "CloudCompare.exe"  # Assuming CloudCompare.exe is in PATH
 
     try:
         result = subprocess.run(cc_command, capture_output=True, text=True, check=True)
